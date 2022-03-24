@@ -10,4 +10,4 @@ app = FastAPI()
 @app.get('/')
 async def site_root():
     """root"""
-    return {"message": "Hello, WORLD!!!!!", "name": "a soft breeze"}
+    return {"message": "Hello, WORLD!!!!!"}
