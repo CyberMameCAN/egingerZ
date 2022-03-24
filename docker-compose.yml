@@ -32,7 +32,23 @@ services:
     #of the app container`CMD`To overwrite`command`use
     # command: "uvicorn app.main:app --reload --host 0.0.0.0"
 
+  project_egingerz_db:
+    container_name: project_egingerz_db
+    #image: mysql:8.0
+    image: mysql:5.7
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'egingerz'
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    #command: --default-authentication-plugin=mysql_native_password # for 8.0
+    ports:
+      - 33305:3306
+
 networks:
   nginx_network:
     driver: bridge
 
+volumes:
+  mysql_data:
