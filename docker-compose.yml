@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  project_egingerz_web:
+    container_name: project_egingerz_web
+    image: nginx:alpine
+    depends_on:
+      # `app`Because the service (container) needs to be started first`depends_on`Is specified
+      - project_egingerz_app
+    ports:
+      #Port mapping:"Host OS port:container(Nginx)Port"
+      - "7080:80"
+    volumes:
+      #volume mount:"Host OS path:Path in the container"
+      - ./web/conf.d:/etc/nginx/conf.d
+    networks:
+      - nginx_network
+
+  project_egingerz_app:
+    container_name: project_egingerz_app
+    image: project_egingerz_app #Specify the name of the Docker image to be built
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    expose:
+      - 8000
+    networks:
+      - nginx_network
+    #For example, if you want to edit the source code in real time`volumes`Convenient to mount with
+    # volumes:
+    #   - ./app/app:/app/app
+    #of the app container`CMD`To overwrite`command`use
+    # command: "uvicorn app.main:app --reload --host 0.0.0.0"
+
+networks:
+  nginx_network:
+    driver: bridge
+
